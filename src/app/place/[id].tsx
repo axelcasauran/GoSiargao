@@ -49,15 +49,12 @@ export default function PlaceDetailScreen() {
       <StatusBar style="light" />
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 0 }}>
         {/* Gallery header */}
-        <PhotoBlock tint={place.tint} style={styles.header} gap={15} opacity={0.07}>
+        <PhotoBlock tint={place.tint} image={place.image} style={styles.header} gap={15} opacity={0.07}>
           <LinearGradient
             colors={['rgba(255,255,255,0.22)', 'rgba(10,20,22,0)', 'rgba(10,20,22,0)', 'rgba(10,20,22,0.25)']}
             locations={[0, 0.22, 0.6, 1]}
             style={StyleSheet.absoluteFill}
           />
-          <AppText variant="mono" size={10} color="rgba(255,255,255,0.7)" style={styles.galleryMono}>
-            PHOTO GALLERY · {place.name.toUpperCase()}
-          </AppText>
           <View style={styles.dots}>
             <View style={[styles.dot, { width: 22, backgroundColor: colors.white }]} />
             <View style={styles.dot} />
@@ -191,7 +188,6 @@ function ActionBtn({
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   header: { height: 340 },
-  galleryMono: { position: 'absolute', left: 12, bottom: 46, textTransform: 'uppercase', letterSpacing: 0.5 },
   dots: { position: 'absolute', left: 0, right: 0, bottom: 30, flexDirection: 'row', justifyContent: 'center', gap: 6 },
   dot: { width: 6, height: 6, borderRadius: 9, backgroundColor: 'rgba(255,255,255,0.55)' },
   sheet: {

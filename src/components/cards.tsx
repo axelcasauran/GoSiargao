@@ -8,14 +8,6 @@ import { PhotoBlock } from './PhotoBlock';
 import { Badge, HeartButton } from './primitives';
 import { AppText, Display } from './Text';
 
-function MonoTag({ children }: { children: string }) {
-  return (
-    <AppText variant="mono" size={9} color="rgba(255,255,255,0.62)" style={styles.monoTag}>
-      {children}
-    </AppText>
-  );
-}
-
 function CatChip({ label }: { label: string }) {
   return (
     <View style={styles.catChip}>
@@ -32,7 +24,7 @@ export function CollectionCard({ place, width = 228 }: { place: Place; width?: n
   const saved = isSaved(place.id);
   return (
     <Pressable onPress={() => open(place.id)} style={{ width }}>
-      <PhotoBlock tint={place.tint} style={styles.collectionPhoto}>
+      <PhotoBlock tint={place.tint} image={place.image} style={styles.collectionPhoto}>
         <LinearGradient
           colors={['rgba(10,20,22,0.35)', 'rgba(10,20,22,0)']}
           start={{ x: 0, y: 1 }}
@@ -44,9 +36,6 @@ export function CollectionCard({ place, width = 228 }: { place: Place; width?: n
         </View>
         <View style={styles.trHeart}>
           <HeartButton saved={saved} onPress={() => onHeart(place.id)} size={16} />
-        </View>
-        <View style={styles.blMono}>
-          <MonoTag>photo</MonoTag>
         </View>
       </PhotoBlock>
       <Display size={16} style={{ marginTop: 9 }} numberOfLines={1}>
@@ -70,7 +59,7 @@ export function NearbyCard({ place }: { place: Place }) {
   const { open } = usePlaceActions();
   return (
     <Pressable onPress={() => open(place.id)} style={{ width: 150 }}>
-      <PhotoBlock tint={place.tint} style={styles.nearbyPhoto} />
+      <PhotoBlock tint={place.tint} image={place.image} style={styles.nearbyPhoto} />
       <Display size={14} style={{ marginTop: 7 }} numberOfLines={1}>
         {place.name}
       </Display>
@@ -87,11 +76,7 @@ export function ExploreRow({ place }: { place: Place }) {
   const saved = isSaved(place.id);
   return (
     <Pressable onPress={() => open(place.id)} style={[styles.row, shadow.card]}>
-      <PhotoBlock tint={place.tint} style={styles.rowPhoto}>
-        <View style={styles.blMonoSm}>
-          <MonoTag>photo</MonoTag>
-        </View>
-      </PhotoBlock>
+      <PhotoBlock tint={place.tint} image={place.image} style={styles.rowPhoto} />
       <View style={styles.rowBody}>
         <View style={styles.rowTop}>
           <View style={{ flex: 1 }}>
@@ -128,7 +113,7 @@ export function SavedCard({ place }: { place: Place }) {
   const { open, onHeart } = usePlaceActions();
   return (
     <Pressable onPress={() => open(place.id)} style={{ flex: 1 }}>
-      <PhotoBlock tint={place.tint} style={styles.savedPhoto}>
+      <PhotoBlock tint={place.tint} image={place.image} style={styles.savedPhoto}>
         <View style={styles.offlineChip}>
           <Icon name="download" size={11} color={colors.white} strokeWidth={2.4} />
           <AppText variant="semibold" size={9} color={colors.white}>
@@ -153,7 +138,7 @@ export function SavedCard({ place }: { place: Place }) {
 export function EventDiscoverCard({ event, onOpen }: { event: EventItem; onOpen: () => void }) {
   return (
     <Pressable onPress={onOpen} style={{ width: 172 }}>
-      <PhotoBlock tint={event.tint} style={styles.eventDiscoverPhoto}>
+      <PhotoBlock tint={event.tint} image={event.image} style={styles.eventDiscoverPhoto}>
         <View style={styles.dateBadge}>
           <AppText variant="bold" size={10} color={colors.coral} tracking={0.6}>
             {event.date}
@@ -182,7 +167,7 @@ export function EventAgendaRow({ event, onOpen }: { event: EventItem; onOpen: ()
         <Display size={26}>{event.day}</Display>
         <View style={[styles.agendaDot, { backgroundColor: event.tint }]} />
       </View>
-      <PhotoBlock tint={event.tint} style={styles.agendaPhoto}>
+      <PhotoBlock tint={event.tint} image={event.image} style={styles.agendaPhoto}>
         <LinearGradient
           colors={['rgba(10,20,22,0.55)', 'rgba(10,20,22,0)']}
           start={{ x: 0, y: 1 }}
@@ -208,7 +193,6 @@ export function EventAgendaRow({ event, onOpen }: { event: EventItem; onOpen: ()
 }
 
 const styles = StyleSheet.create({
-  monoTag: { textTransform: 'uppercase', letterSpacing: 0.4 },
   catChip: {
     backgroundColor: 'rgba(10,20,22,0.34)',
     borderRadius: radius.pill,
@@ -219,8 +203,6 @@ const styles = StyleSheet.create({
   nearbyPhoto: { height: 104, borderRadius: 14 },
   tlChip: { position: 'absolute', left: 9, top: 9 },
   trHeart: { position: 'absolute', right: 9, top: 9 },
-  blMono: { position: 'absolute', left: 9, bottom: 8 },
-  blMonoSm: { position: 'absolute', left: 6, bottom: 5 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 3 },
   dot: { width: 3, height: 3, borderRadius: 9, backgroundColor: '#b8c0c0' },
 

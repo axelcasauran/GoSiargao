@@ -14,6 +14,7 @@ export default defineSchema({
     cat: v.string(),
     catLabel: v.string(),
     tint: v.string(),
+    image: v.optional(v.string()),
     tags: v.array(v.string()),
     price: v.string(),
     priceLabel: v.string(),

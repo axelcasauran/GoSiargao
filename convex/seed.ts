@@ -20,6 +20,7 @@ export const run = mutation({
         cat: p.cat,
         catLabel: p.catLabel,
         tint: p.tint,
+        image: p.image,
         tags: p.tags,
         price: p.price,
         priceLabel: p.priceLabel,

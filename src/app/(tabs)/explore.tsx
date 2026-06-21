@@ -129,7 +129,7 @@ function MapView({ places, bottomInset }: { places: Record<string, Place>; botto
       {/* preview card */}
       {preview ? (
         <Pressable onPress={() => open(preview.id)} style={[styles.preview, { bottom: 18 + bottomInset }, shadow.raised]}>
-          <PhotoBlock tint={preview.tint} style={styles.previewPhoto} />
+          <PhotoBlock tint={preview.tint} image={preview.image} style={styles.previewPhoto} />
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <AppText variant="semibold" size={11} color={preview.tint}>{preview.catLabel}</AppText>
             <Display size={18} style={{ marginTop: 1 }}>{preview.name}</Display>

@@ -55,7 +55,7 @@ export default function DiscoverScreen() {
       {/* Hero */}
       {hero ? (
         <Pressable onPress={() => open(hero.id)} style={[styles.hero, shadow.raised]}>
-          <PhotoBlock tint={hero.tint} style={styles.heroFill} gap={14} opacity={0.07} />
+          <PhotoBlock tint={hero.tint} image={hero.image} style={styles.heroFill} gap={14} opacity={0.07} />
           <LinearGradient
             colors={['rgba(10,20,22,0.74)', 'rgba(10,20,22,0.1)', 'rgba(10,20,22,0.18)']}
             locations={[0, 0.54, 1]}
@@ -68,9 +68,6 @@ export default function DiscoverScreen() {
           <View style={styles.heroHeart}>
             <HeartButton saved={isSaved(hero.id)} onPress={() => onHeart(hero.id)} size={19} />
           </View>
-          <AppText variant="mono" size={10} color="rgba(255,255,255,0.7)" style={styles.heroMono}>
-            PHOTO · CLOUD 9 BOARDWALK
-          </AppText>
           <View style={styles.heroFooter}>
             <View style={styles.heroTags}>
               <View style={styles.openNow}>
@@ -194,7 +191,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   heroHeart: { position: 'absolute', top: 13, right: 13 },
-  heroMono: { position: 'absolute', left: 12, bottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 },
   heroFooter: { position: 'absolute', left: 18, right: 18, bottom: 42 },
   heroTags: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   openNow: {

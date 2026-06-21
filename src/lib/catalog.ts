@@ -10,6 +10,7 @@ function toPlace(d: any): Place {
     cat: d.cat,
     catLabel: d.catLabel,
     tint: d.tint,
+    image: d.image ?? '',
     tags: d.tags,
     price: d.price,
     priceLabel: d.priceLabel,

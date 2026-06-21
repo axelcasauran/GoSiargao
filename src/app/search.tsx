@@ -79,7 +79,7 @@ export default function SearchScreen() {
             </AppText>
             {results.map((p) => (
               <Pressable key={p.id} onPress={() => openPlace(p.id)} style={styles.resultRow}>
-                <PhotoBlock tint={p.tint} style={styles.resultPhoto} gap={9} opacity={0.1} />
+                <PhotoBlock tint={p.tint} image={p.image} style={styles.resultPhoto} gap={9} opacity={0.1} />
                 <View style={{ flex: 1 }}>
                   <Display size={16}>{p.name}</Display>
                   <AppText size={12} color={colors.muted}>{p.catLabel} · {p.area}</AppText>
