@@ -9,6 +9,7 @@ function toPlace(d: any): Place {
     area: d.area,
     cat: d.cat,
     catLabel: d.catLabel,
+    catShort: d.catShort,
     tint: d.tint,
     image: d.image ?? '',
     tags: d.tags,
@@ -19,6 +20,16 @@ function toPlace(d: any): Place {
     travel: d.travel,
     openNow: d.openNow,
     blurb: d.blurb,
+    lat: d.lat,
+    lng: d.lng,
+    rating: d.rating,
+    reviews: d.reviews,
+    phone: d.phone,
+    address: d.address,
+    mapsUrl: d.mapsUrl,
+    dirsUrl: d.dirsUrl,
+    placeId: d.placeId,
+    category: d.category,
   };
 }
 

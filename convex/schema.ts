@@ -13,6 +13,7 @@ export default defineSchema({
     area: v.string(),
     cat: v.string(),
     catLabel: v.string(),
+    catShort: v.optional(v.string()),
     tint: v.string(),
     image: v.optional(v.string()),
     tags: v.array(v.string()),
@@ -23,6 +24,18 @@ export default defineSchema({
     travel: v.string(),
     openNow: v.boolean(),
     blurb: v.string(),
+
+    // Real Google Places data (GPS + contact) for the offline map & actions.
+    lat: v.optional(v.number()),
+    lng: v.optional(v.number()),
+    rating: v.optional(v.number()),
+    reviews: v.optional(v.number()),
+    phone: v.optional(v.string()),
+    address: v.optional(v.string()),
+    mapsUrl: v.optional(v.string()),
+    dirsUrl: v.optional(v.string()),
+    placeId: v.optional(v.string()),
+    category: v.optional(v.string()),
   }).index('by_slug', ['slug']),
 
   // Per-user saved places — the realtime "My Trip" list.

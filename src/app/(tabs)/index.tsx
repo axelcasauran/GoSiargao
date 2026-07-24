@@ -7,7 +7,7 @@ import { GlyphPath, Icon } from '@/components/Icon';
 import { PhotoBlock } from '@/components/PhotoBlock';
 import { HeartButton } from '@/components/primitives';
 import { AppText, Display } from '@/components/Text';
-import { CATEGORIES, COLLECTIONS, EVENTS } from '@/data/places';
+import { CATEGORIES, COLLECTIONS, EVENTS, FEATURED_ID } from '@/data/places';
 import { usePlaces } from '@/lib/catalog';
 import { usePlaceActions } from '@/lib/usePlaceActions';
 import { colors, radius, shadow } from '@/theme';
@@ -17,7 +17,7 @@ export default function DiscoverScreen() {
   const router = useRouter();
   const places = usePlaces();
   const { isSaved, open, onHeart } = usePlaceActions();
-  const hero = places.cloud9;
+  const hero = places[FEATURED_ID] ?? Object.values(places)[0];
 
   return (
     <ScrollView
@@ -71,12 +71,14 @@ export default function DiscoverScreen() {
           <View style={styles.heroFooter}>
             <View style={styles.heroTags}>
               <View style={styles.openNow}>
-                <AppText variant="semibold" size={11} color={colors.white}>Open now</AppText>
+                <AppText variant="semibold" size={11} color={colors.white}>
+                  {hero.rating ? `★ ${hero.rating.toFixed(1)}` : 'Open now'}
+                </AppText>
               </View>
-              <AppText variant="medium" size={12} color="rgba(255,255,255,0.85)">General Luna</AppText>
+              <AppText variant="medium" size={12} color="rgba(255,255,255,0.85)">{hero.area}</AppText>
             </View>
-            <Display size={30} color={colors.white} style={{ lineHeight: 32 }}>
-              Catch the sunrise{'\n'}at Cloud 9
+            <Display size={30} color={colors.white} style={{ lineHeight: 32 }} numberOfLines={2}>
+              {hero.name}
             </Display>
           </View>
         </Pressable>

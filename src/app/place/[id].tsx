@@ -9,7 +9,7 @@ import { GlyphPath, Icon } from '@/components/Icon';
 import { PhotoBlock } from '@/components/PhotoBlock';
 import { HeartButton } from '@/components/primitives';
 import { AppText, Display } from '@/components/Text';
-import { placeFacts, TIP_BANK } from '@/data/places';
+import { placeFacts, placeTips, type Place } from '@/data/places';
 import { usePlaces } from '@/lib/catalog';
 import { useToast } from '@/components/Toast';
 import { usePlaceActions } from '@/lib/usePlaceActions';
@@ -33,15 +33,38 @@ export default function PlaceDetailScreen() {
   }
 
   const facts = placeFacts(place);
-  const tips = TIP_BANK[place.id] ?? TIP_BANK.default;
-  const nearby = Object.values(places).filter((p) => p.id !== place.id).slice(0, 4);
+  const tips = placeTips(place);
+  const nearby = nearbyPlaces(places, place);
   const saved = isSaved(place.id);
+
+  const digits = (place.phone ?? '').replace(/[^0-9]/g, '');
 
   const directions = () => {
     flash('Opening Directions…');
-    Linking.openURL(
-      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' Siargao')}`,
-    ).catch(() => {});
+    const url =
+      place.dirsUrl ||
+      (place.lat != null && place.lng != null
+        ? `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' Siargao')}`);
+    Linking.openURL(url).catch(() => {});
+  };
+
+  const photos = () => {
+    if (!place.mapsUrl) return flash('No listing linked');
+    flash('Opening photos & reviews…');
+    Linking.openURL(place.mapsUrl).catch(() => {});
+  };
+
+  const whatsapp = () => {
+    if (!digits) return flash('No number listed');
+    flash('Opening WhatsApp…');
+    Linking.openURL(`https://wa.me/${digits}`).catch(() => {});
+  };
+
+  const call = () => {
+    if (!digits) return flash('No number listed');
+    flash('Calling…');
+    Linking.openURL(`tel:${place.phone?.replace(/\s/g, '')}`).catch(() => {});
   };
 
   return (
@@ -60,6 +83,14 @@ export default function PlaceDetailScreen() {
             <View style={styles.dot} />
             <View style={styles.dot} />
           </View>
+          {place.mapsUrl ? (
+            <Pressable onPress={photos} style={[styles.photosPill, shadow.card]}>
+              <Icon name="star" size={13} color={colors.orange} fill={colors.orange} />
+              <AppText variant="semibold" size={12} color={colors.ink}>
+                Photos &amp; reviews
+              </AppText>
+            </Pressable>
+          ) : null}
         </PhotoBlock>
 
         {/* Sheet */}
@@ -150,12 +181,25 @@ export default function PlaceDetailScreen() {
 
       {/* Sticky action bar */}
       <View style={[styles.actionBar, { paddingBottom: insets.bottom + 14 }]}>
-        <ActionBtn icon="whatsapp" label="WhatsApp" bg={colors.green} onPress={() => flash('Opening WhatsApp…')} />
+        <ActionBtn icon="whatsapp" label="WhatsApp" bg={colors.green} onPress={whatsapp} />
         <ActionBtn icon="navigation" label="Directions" bg={colors.orange} onPress={directions} />
-        <ActionBtn icon="phone" label="Call" bg={colors.ink} onPress={() => flash('Calling…')} />
+        <ActionBtn icon="phone" label="Call" bg={colors.ink} onPress={call} />
       </View>
     </View>
   );
+}
+
+/** Four nearest places by great-circle distance (falls back to catalog order). */
+function nearbyPlaces(all: Record<string, Place>, place: Place): Place[] {
+  const others = Object.values(all).filter((p) => p.id !== place.id);
+  if (place.lat == null || place.lng == null) return others.slice(0, 4);
+  const dist = (p: Place) => {
+    if (p.lat == null || p.lng == null) return Infinity;
+    const dx = (p.lng - (place.lng as number)) * Math.cos((place.lat as number) * (Math.PI / 180));
+    const dy = p.lat - (place.lat as number);
+    return dx * dx + dy * dy;
+  };
+  return others.sort((a, b) => dist(a) - dist(b)).slice(0, 4);
 }
 
 function Badge({ text, color, bg }: { text: string; color: string; bg: string }) {
@@ -189,6 +233,18 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   header: { height: 340 },
   dots: { position: 'absolute', left: 0, right: 0, bottom: 30, flexDirection: 'row', justifyContent: 'center', gap: 6 },
+  photosPill: {
+    position: 'absolute',
+    right: 14,
+    bottom: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255,255,255,0.94)',
+    borderRadius: radius.pill,
+    paddingVertical: 8,
+    paddingHorizontal: 13,
+  },
   dot: { width: 6, height: 6, borderRadius: 9, backgroundColor: 'rgba(255,255,255,0.55)' },
   sheet: {
     marginTop: -26,
