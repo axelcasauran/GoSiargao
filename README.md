@@ -37,8 +37,9 @@ src/
     (tabs)/             # Discover / Explore / Events / My Trip + custom tab bar
     place/[id].tsx      # Place detail
     search.tsx          # Search modal
-  components/           # Icon, PhotoBlock, cards, primitives, Toast, LoginScreen
-  data/places.ts        # The catalog (single source of truth; seeds Convex)
+  components/           # Icon, PhotoBlock, cards, primitives, Toast, LoginScreen, OfflineMap
+  data/places.ts        # Editorial layer (hero, collections, itinerary, facts, filters)
+  data/directory.ts     # 367 real GPS-tagged places (generated; single source of truth)
   lib/                  # convex client, catalog/saves hooks, place actions
   theme/                # colors, fonts, radii, shadows
 design/Siargao.dc.html  # imported design source (reference)
@@ -113,6 +114,19 @@ Convex loads, so screens are never empty.
   project buildable straight from `npm install`, the display face is **Space
   Grotesk** (Google Fonts). Drop Clash Display `.ttf`s into `assets/fonts` and
   remap `fonts.display` in `src/theme/index.ts` for a 1:1 match.
+- **The catalog.** `src/data/directory.ts` holds **367 real General Luna /
+  Siargao places** (name, category, true GPS coordinates, rating, hours, phone,
+  address and a review-highlight blurb) compiled from Google Places. It is
+  generated — regenerate with `node scripts/build-directory.js` (source data in
+  `scripts/directory-source.json`). Every place carries `mapsUrl`/`dirsUrl`, so
+  the detail screen's **Photos & reviews**, **Directions**, **Call** and
+  **WhatsApp** actions open the real listing.
+- **Offline map.** `src/components/OfflineMap.tsx` projects the real
+  coordinates with Web Mercator and streams OpenStreetMap raster tiles that
+  `expo-image` disk-caches, so already-panned areas keep working offline; when
+  no tiles are reachable it falls back to a coordinate graticule with the GPS
+  pins still correctly placed (the same approach as the bundled directory's
+  offline HTML export). Pan to move, pinch or use ±/recenter to zoom.
 - **Placeholder imagery.** Like the design, photos are tinted blocks with a
   diagonal hatch (`src/components/PhotoBlock.tsx`) rather than real images.
 - See [`STAGES.md`](./STAGES.md) for the staged build plan and status.

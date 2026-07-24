@@ -19,6 +19,7 @@ export const run = mutation({
         area: p.area,
         cat: p.cat,
         catLabel: p.catLabel,
+        catShort: p.catShort,
         tint: p.tint,
         image: p.image,
         tags: p.tags,
@@ -29,6 +30,16 @@ export const run = mutation({
         travel: p.travel,
         openNow: p.openNow,
         blurb: p.blurb,
+        lat: p.lat,
+        lng: p.lng,
+        rating: p.rating,
+        reviews: p.reviews,
+        phone: p.phone,
+        address: p.address,
+        mapsUrl: p.mapsUrl,
+        dirsUrl: p.dirsUrl,
+        placeId: p.placeId,
+        category: p.category,
       });
       n++;
     }
